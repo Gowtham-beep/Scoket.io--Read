@@ -20,10 +20,12 @@ io.on('connection',(soket)=>{
     soket.on('disconnect',()=>{
         console.log('A user disconnected')
     })
-    
-    soket.on('chat message',(msg)=>{
+
+    soket.on('chatmessage',(msg)=>{
         console.log('message:',msg)
+        io.emit('chatmessage',msg)
     })
+    
 })
 server.listen(3000,()=>{
     console.log('serevr running aat http://localhost:3000')

@@ -21,7 +21,7 @@ io.on('connection',(soket)=>{
         console.log('A user disconnected')
     })
 
-    soket.on('chatmessage',(msg)=>{
+    soket.on('chatmessage',(msg)=>{                 
         console.log('message:',msg)
         io.emit('chatmessage',msg)
     })

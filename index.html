@@ -36,7 +36,7 @@
     if(input.value){
         socket.emit('chatmessage',input.value)
         input.value=''
-    }
+    }         
   })
   socket.on('chatmessage',(msg)=>{
     const item=document.createElement('li')

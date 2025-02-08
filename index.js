@@ -6,7 +6,9 @@ import { Server } from 'socket.io'
 
 const app=express()
 const server=createServer(app)
-const io= new Server(server)
+const io= new Server(server,{
+    connectionStateRecovery:{}
+})
 
 const __dirname=dirname(fileURLToPath(import.meta.url))
 
@@ -14,19 +16,23 @@ app.get('/',(req,res)=>{
     res.sendFile(join(__dirname,'index.html'))
 })
 
-io.on('connection',(soket)=>{
-    console.log('A user connected')
+io.on('connection', (socket) => {
+    console.log('A user connected');
 
-    soket.on('disconnect',()=>{
-        console.log('A user disconnected')
-    })
+    if (socket.recovered) {
+        console.log(`User ${socket.id} reconnected and recovered missed events`);
+    }
 
-    soket.on('chatmessage',(msg)=>{                 
-        console.log('message:',msg)
-        io.emit('chatmessage',msg)
-    })
-    
-})
+    socket.on('disconnect', (reason) => {
+        console.log(`User disconnected due to: ${reason}`);
+    });
+
+    socket.on('chatmessage', (msg) => {
+        console.log('message:', msg);
+        io.emit('chatmessage', msg);
+    });
+});
+
 server.listen(3000,()=>{
     console.log('serevr running aat http://localhost:3000')
 })

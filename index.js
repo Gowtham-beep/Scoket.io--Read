@@ -6,7 +6,7 @@ import { Server } from 'socket.io'
 
 const app=express()
 const server=createServer(app)
-const io=Server(server)
+const io= new Server(server)
 
 const __dirname=dirname(fileURLToPath(import.meta.url))
 
@@ -15,7 +15,11 @@ app.get('/',(req,res)=>{
 })
 
 io.on('connection',(soket)=>{
-    console.log('a user connected')
+    console.log('A user connected')
+
+    soket.on('disconnect',()=>{
+        console.log('A user disconnected')
+    })
 })
 server.listen(3000,()=>{
     console.log('serevr running aat http://localhost:3000')
